@@ -1,0 +1,19 @@
+{
+  "name": "ezito-utils",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./", 
+  "scripts": {
+    "install": "node ./core/utils/scripts/install/index.js",
+    "prepublish" : "",
+    "preinstall" : "",
+    "postinstall": "node ./core/utils/scripts/install/postinstall.js"
+  }, 
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "" ,
+  "engines": {
+    "node": ">=12"
+  }
+}
