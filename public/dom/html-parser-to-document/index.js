@@ -1,5 +1,6 @@
+'use strict';
 
-const attrConverter = require('ezito/utils/public/dom/attributes-converter');
+const attrConverter = require('ezito-utils/public/dom/attributes-converter');
 
 
 /**
