@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "main": "./", 
-  "scripts": {
-    "install": "node ./core/utils/scripts/install/index.js",
-    "prepublish" : "",
-    "preinstall" : "",
-    "postinstall": "node ./core/utils/scripts/install/postinstall.js"
-  }, 
-  "keywords": [],
+  "keywords": [
+    "query" ,
+    "dom-to-react-child",
+    "fs",
+    "object",
+    "html-parser",
+    "is"
+  ],
   "author": "",
   "license": "ISC",
   "description": "" ,
