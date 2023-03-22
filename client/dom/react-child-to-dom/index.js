@@ -1,8 +1,8 @@
 'use strict';
-const { convertToHtml }  = require('ezito/utils/public/dom/attributes-converter');
-const jsonToStyleAttribute  = require('ezito/utils/client/dom/json-to-style-attribute');
-const makeId = require('ezito/utils/public/crypto/make-id');
-const eventsList = require('ezito/utils/client/events-list');
+const { convertToHtml }  = require('ezito-utils/public/dom/attributes-converter');
+const jsonToStyleAttribute  = require('ezito-utils/client/dom/json-to-style-attribute');
+const makeId = require('ezito-utils/public/crypto/make-id');
+const eventsList = require('ezito-utils/client/events-list');
 var hasSymbol = typeof Symbol === 'function' && Symbol.for;
 var hasSymbol = typeof Symbol === 'function' && Symbol.for;
 var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
