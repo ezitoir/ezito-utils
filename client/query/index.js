@@ -1,7 +1,6 @@
-require('../node-prototype');
-//const CreateElement = require('./../create-element');
-const ArrayToNodeList = require('./../array-to-node-list'); 
-const NodeAttrToCssSelector = require('./../node-attr-to-css-selector'); 
+require('ezito-utils/client/node-prototype'); 
+const ArrayToNodeList = require('ezito-utils/client/array-to-node-list'); 
+const NodeAttrToCssSelector = require('ezito-utils/client/node-attr-to-css-selector'); 
  
 const Query = function ( node , query = null , ...children ) {
     // check if node is function return window load event
