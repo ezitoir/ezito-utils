@@ -7,9 +7,16 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-const { REACT_ELEMENT_TYPE } = require('./types');
-function isElement(object) {
-    return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+
+const { REACT_SUSPENSE_TYPE } = require('./types');
+const typeOf = require('./typeOf');
+
+
+
+
+function isSuspense(object) {
+    return typeOf(object) === REACT_SUSPENSE_TYPE;
 }
 
-module.exports = isElement;
+module.exports = isSuspense;
+  

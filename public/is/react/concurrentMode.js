@@ -7,9 +7,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-const { REACT_ELEMENT_TYPE } = require('./types');
-function isElement(object) {
-    return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+const typeOf = require('./typeOf');
+const { REACT_CONCURRENT_MODE_TYPE }= require('./types');
+function isConcurrentMode(object) {
+    return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
 }
-
-module.exports = isElement;
+module.exports = isConcurrentMode;

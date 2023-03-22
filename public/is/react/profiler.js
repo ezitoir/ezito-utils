@@ -7,9 +7,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-const { REACT_ELEMENT_TYPE } = require('./types');
-function isElement(object) {
-    return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+
+const { REACT_PROFILER_TYPE } = require('./types');
+const typeOf = require('./typeOf');
+
+function isProfiler(object) {
+    return typeOf(object) === REACT_PROFILER_TYPE;
 }
 
-module.exports = isElement;
+module.exports = isProfiler;
