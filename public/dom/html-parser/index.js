@@ -27,7 +27,7 @@ IN THE SOFTWARE.
  */
 
 
-const makeId = require('eziot-utils/public/crypto/make-id');
+const makeId = require('ezito-utils/public/crypto/make-id');
 
 const CustomDomHandler = /** @class */ (function () {
     const $$NodeSymbol = Symbol('Ezito.Node');
