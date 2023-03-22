@@ -1,0 +1,101 @@
+
+
+const formTags = new Set([
+    "input",
+    "option",
+    "optgroup",
+    "select",
+    "button",
+    "datalist",
+    "textarea",
+]);
+const pTag = new Set(["p"]);
+const tableSectionTags = new Set(["thead", "tbody"]);
+const ddtTags = new Set(["dd", "dt"]);
+const rtpTags = new Set(["rt", "rp"]);
+const openImpliesClose =Array([
+    ["tr", new Set(["tr", "th", "td"])],
+    ["th", new Set(["th"])],
+    ["td", new Set(["thead", "th", "td"])],
+    ["body", new Set(["head", "link", "script"])],
+    ["li", new Set(["li"])],
+    ["p", pTag],
+    ["h1", pTag],
+    ["h2", pTag],
+    ["h3", pTag],
+    ["h4", pTag],
+    ["h5", pTag],
+    ["h6", pTag],
+    ["select", formTags],
+    ["input", formTags],
+    ["output", formTags],
+    ["button", formTags],
+    ["datalist", formTags],
+    ["textarea", formTags],
+    ["option", new Set(["option"])],
+    ["optgroup", new Set(["optgroup", "option"])],
+    ["dd", ddtTags],
+    ["dt", ddtTags],
+    ["address", pTag],
+    ["article", pTag],
+    ["aside", pTag],
+    ["blockquote", pTag],
+    ["details", pTag],
+    ["div", pTag],
+    ["dl", pTag],
+    ["fieldset", pTag],
+    ["figcaption", pTag],
+    ["figure", pTag],
+    ["footer", pTag],
+    ["form", pTag],
+    ["header", pTag],
+    ["hr", pTag],
+    ["main", pTag],
+    ["nav", pTag],
+    ["ol", pTag],
+    ["pre", pTag],
+    ["section", pTag],
+    ["table", pTag],
+    ["ul", pTag],
+    ["rt", rtpTags],
+    ["rp", rtpTags],
+    ["tbody", tableSectionTags],
+    ["tfoot", tableSectionTags],
+]);
+
+const voidElements = new Set([
+    "area",
+    "base",
+    "basefont",
+    "br",
+    "col",
+    "command",
+    "embed",
+    "frame",
+    "hr",
+    "img",
+    "input",
+    "isindex",
+    "keygen",
+    "link",
+    "meta",
+    "param",
+    "source",
+    "track",
+    "wbr",
+]);
+
+
+const foreignContextElements = new Set(["math", "svg"]);
+
+const htmlIntegrationElements = new Set([
+    "mi",
+    "mo",
+    "mn",
+    "ms",
+    "mtext",
+    "annotation-xml",
+    "foreignobject",
+    "desc",
+    "title",
+]);

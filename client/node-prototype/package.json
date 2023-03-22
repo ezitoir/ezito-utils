@@ -1,0 +1,6 @@
+{
+    "name": "@ezito/utils/client",
+    "version": "0.1.0",
+    "private": true,
+    "main": "./umd/node-prototype.development.js"
+  } 
