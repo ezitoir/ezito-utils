@@ -3,3 +3,7 @@
 
     npm install https://github.com/ezitoir/ezito-utils.git
 
+## Usage
+    
+```javascript
+const resolve = require('ezito-utils/server/fs/resolve');
