@@ -5,6 +5,7 @@
 ## Usage
 
 ```javascript
+const similar = require('ezito-utils/public/is/object/similar')
 const child1 = React.createElement('div' , { type : "e"} , React.createElement('p'));
 const child2 = React.createElement('div', { type : "e"} , React.createElement('p'));
 console.log(similar(child1,child2));
