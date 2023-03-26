@@ -16,7 +16,7 @@ function isSimilar( object , stepObject ){
                     }
                     else{
                         return false;
-                    } 
+                    }
                 }
             }
         }

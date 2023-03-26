@@ -1,19 +1,5 @@
 {
-    "name" : "is" ,
-    "version" : "1.0.0",
-    "main" : "./src",
-    "files" :[
-        "./src/object",
-        "./src/react" ,
-        "./src/ssr.js",
-        "./src/boolean.js",
-        "./src/arrow-function.js",
-        "./src/class.js",
-        "./src/async-function.js",
-        "./src/function.js",
-        "./src/number.js",
-        "./src/strict.js",
-        "./src/string.js",
-        "./src/have-constructor.js"
-    ] 
+    "name": "ezito-utils/public/is",
+    "version": "1.0.0",
+    "main": "index.js"
 }
