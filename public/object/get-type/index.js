@@ -42,20 +42,28 @@ function getType( object ){
     if(getFunctionType(object)){
         return getFunctionType(object);
     }
-    else if( typeof object === 'object' 
-    && object.constructor === Promise 
-    && object.then.constructor === Function 
-    && Object.prototype.toString.call(object) === '[object Promise]'){
+
+    if( 
+        typeof object === 'object' && 
+        object.constructor === Promise && 
+        object.then.constructor === Function && 
+        Object.prototype.toString.call(object) === '[object Promise]'
+    ){
         return 'promise';
     } 
-    else if( typeof object === "string" ){
+
+    if( typeof object === "string" && Boolean(object.trim) === true){
         return "string";
     }
-    else if(typeof object === "number" ) {
+
+    if(typeof object === "number") {
         return "number";
-    }
-    else if(typeof object === "undefined" ){
-        return "undefined"
+    } 
+    if(typeof object === "boolean" && ( object || !object)) {
+        return "boolean";
+    } 
+    if(typeof object === "object" ){
+        return "object"
     }
 }
 
