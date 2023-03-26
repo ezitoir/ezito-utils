@@ -5,7 +5,7 @@
 ## Usage
 
 ```javascript
-const getType = require('./public/object/get-type');
+const getType = require('ezito-utils/public/object/get-type');
 console.log(
     getType(
         async () => {}
