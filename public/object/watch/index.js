@@ -1,5 +1,5 @@
-
-if (!Object.prototype.watch) {
+'use strict';
+if (!Object.hasOwnProperty.call(Object,'watch')) {
     Object.defineProperty(Object.prototype, "watch", {
         enumerable: false,
         configurable: true,
@@ -48,7 +48,7 @@ if (!Object.prototype.watch) {
  * @param  {...any send to callback } args 
  */
 const WatchObject  = function (object = Object , name , callback , context ,...args) {
-    object.watch( name , callback , context , ...args);
+    return object.watch( name , callback , context , ...args);
 };
 
 module.exports = WatchObject ; 
