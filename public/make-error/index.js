@@ -1,5 +1,5 @@
 'use strict';
-const getTrace = require('./../trace');
+const getTrace = require('ezito-utils/public/trace');
 
 function makeError (type , message, id = 0){
     var trace = getTrace(1 + id);
