@@ -109,7 +109,6 @@ const resolve = function ezitoFsResolver(file_path , option = { baseDir : null ,
         );
     }
 
-    
     // example resolve('./index.js' , { baseDir : 'src' })
     else if(!isGlobalPath(file_path) && has(option , 'baseDir' , "string") && !has(option ,'paths' ,'object')){
         if(!isGlobalPath(option.baseDir)) {
@@ -148,20 +147,23 @@ const resolve = function ezitoFsResolver(file_path , option = { baseDir : null ,
         if(error) throw newError;
         return newError;
     }
+
+
     if(has(option,'baseDir','string') || has(option, paths,'object')){
         const get_paths = Object.entries(paths);
-        for (const [ key , value ] of get_paths) { 
+
+        for (const [ key , value ] of get_paths) {
             var newValue = value instanceof Array ? value : [ value ];
+            var newKey = key.slice(0 ,key.indexOf('/'))
             for (const fp of newValue ) { 
-                const orgPath = resolve(fp , { retrunDir : true });
-                if(enyCheck(orgPath)){  
-                    if(key === file_path.slice(0 , key.length )){
-                        const new_file_path = file_path.slice( key.length ); 
-                        const newModule = resolve(new_file_path , { baseDir : orgPath });
-                        if(enyCheck(newModule)){
-                            return newModule;
-                        }
-                    }
+                const orgPath = resolve(fp,{},error); 
+                if(key === file_path.slice(0 , key.length )){
+                    const new_file_path = file_path.slice( key.length ); 
+                    const newModule = resolve(new_file_path , { baseDir : orgPath });
+                    return newModule;
+                }
+                else if(file_path === newKey) { 
+                    if(!(orgPath instanceof Error)) return orgPath;
                 }
             }
         } 
@@ -169,16 +171,18 @@ const resolve = function ezitoFsResolver(file_path , option = { baseDir : null ,
 
 
     newError =  makeError(
-        "[]",
-        "",
-        traceCallerNumber
+        '[RESOLVE-SYSTEM-FILE-NOT-FOUND-ERROR]' ,
+        `Directory or File notfound at directory <[\r
+            ${file_path} \r 
+        \r]>`,
+        traceCallerNumber 
     );
     if(error) throw newError;
     return newError;
 };
 resolve.resolveModule = function (file_path , option , error = true){
     var newFilePath = resolve(file_path, option , false);
-    
+    console.log(file_path)
     if(newFilePath instanceof Error){
         if(error) throw newFilePath;
         return newFilePath;
