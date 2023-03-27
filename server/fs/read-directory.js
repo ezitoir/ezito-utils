@@ -1,12 +1,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const resolve = require('./resolve');
-const isDir = require('./is-directory');
-const isFile = require('./is-file');
-const getTrace = require('./private'); 
-const getSize = require('./get-size');
-const getExt = require('./get-extention'); 
+const resolve = require('ezito-utils/server/fs/resolve');
+const isDir = require('ezito-utils/server/fs/is-directory');
+const isFile = require('ezito-utils/server/fs/is-file');
+const getTrace = require('ezito-utils/public/trace'); 
+const getSize = require('ezito-utils/server/fs/get-size');
+const getExt = require('ezito-utils/server/fs/get-extention'); 
 
 function getInfo(full_path){
     return {
@@ -30,7 +30,7 @@ function checkExt( ext_list = [] , ext ){
 
 const readDirectory = function (dir , option = { deep : Infinity , justFile : false , justDir : false , ext : null } , cb ){
     option = { deep : Infinity , justFile : false , justDir : false , ext : null , ...option };
-    const dir_path = resolve(path.resolve(path.dirname(getTrace()[1].getFileName()) , dir) , { retrunDir : true }); 
+    const dir_path = resolve(path.resolve(path.dirname(getTrace(1).getFileName()) , dir) , { retrunDir : true }); 
     const scan_dir = fs.readdirSync(dir_path);
     const list = new Array();
 
