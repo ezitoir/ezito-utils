@@ -8,4 +8,6 @@ module.exports = [
     '.tsx' ,
     '.json' ,
     '.mjs' ,
+    ".es6",
+    ".es"
 ]
