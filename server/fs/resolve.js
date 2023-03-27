@@ -1,127 +1,210 @@
 const path = require('path');
 const fs = require('fs');
-const toPosixPath =require('./to-posix-path');
-const getRootDir = require('./get-root');
-const getHomeDir = require('./home-dir');
-const existsSync  = require('./exists');
-const isFile = require('./is-file');
-const getTrace = require('./private');
-const enyCheck = require('./eny-check');
-
-
-
+const has = require('../../../public/object/has');
+const makeError = require('../../../public/make-error');
+const toPosixPath =require('../to-posix-path');
+const getRootDir = require('../get-root');
+const getHomeDir = require('../home-dir');
+const existsSync  = require('../exists');
+const isFile = require('../is-file');
+const isDirectory = require('../is-directory');
+const getTrace = require('../private/get-trace');
+const enyCheck = require('../eny-check');
+const isGlobalPath = require('../is-global-path');
+var returnDir = require('../return-dir');
+var commonJsExt = require('../common-js-ext'); 
  
 /**
  * 
  * @param { string } nodePath 
- * @param {object = { baseDir , paths : {[]} , pathResolver}} option 
+ * @param {object = { baseDir = string , paths : {[]} , pathResolver}} option 
  * @returns 
  */
-const resolve = function ( file_path , option = { baseDir : undefined , paths : {} , retrunDir : false , targetFile : undefined }){
-    const isNodePathExistsToModuleDir = function (file){  
-        try {
-            return require.resolve(file);
-        } catch (e) {} 
-        return false;
-    };
-    function returnDir( file_path ){
-        return isFile( file_path ) ? path.dirname(file_path) : file_path 
-    }; 
-    const isGlobalPath = function (file_path){
-        try {
-            return file_path.trim()[0] !== '.' && file_path.trim()[0] !== '/' && file_path.trim()[1] !== '/'
-        } catch (error) {
-            return false;
-        }
-    }
-    function createError(fp){
-        const error = new Error('');
-        error.message = `File-System not found ( "${fp}" ) || `;
-        error.code = 404 ;
-        error.name = 'FILE-SYSTEM RESOLVE ERROR ';
-        return error;
-    }
-
+const resolve = function ezitoFsResolver(file_path , option = { baseDir : null , paths : undefined , retrunDir : false } , error = true){
+  
     file_path = toPosixPath(file_path);
-    const caller_path = toPosixPath(path.dirname(getTrace()[1].getFileName()));
+    var traceCallerNumber = getTrace()[1].getFileName() ===  __filename ? 2 : 1;
+    const caller_path = toPosixPath(path.dirname(getTrace()[traceCallerNumber].getFileName()));
+    
     const root = toPosixPath(getRootDir());
     const home_dir = toPosixPath(getHomeDir());
-    const base_dir = toPosixPath(path.resolve(caller_path , option.baseDir || process.cwd()));
     const paths = option.paths || {};
-    const return_dir = option.retrunDir || false ;
-    var localFileName = '';
-
-    if(Object.keys(paths).length === 0){
-        if(option.relative === true && isGlobalPath(file_path)) return createError(file_path);  
-        // example : resolve('react') . 
-        if(isGlobalPath(file_path) && option.baseDir === undefined  && (localFileName=isNodePathExistsToModuleDir(file_path))){
-            if(existsSync(localFileName))return return_dir ? returnDir(localFileName) : localFileName;
-        } 
-        // example : resolve('src/public/index.js') . 
-        if(isGlobalPath(file_path) && option.baseDir === undefined  && (localFileName=isNodePathExistsToModuleDir(path.join(root,file_path)))){
-            if(existsSync(localFileName))return return_dir ? returnDir(localFileName) : localFileName;
-        } 
-        // example : resolve('index.js' , { baseDir : './src' })
-        if(isGlobalPath(file_path) && option.baseDir !== undefined && (localFileName=isNodePathExistsToModuleDir(path.join(base_dir,file_path)))){
-            if(existsSync(localFileName))return return_dir ? returnDir(localFileName) : localFileName;
-        }
+    const return_dir = (option && option.retrunDir) || false;
+    var newError = {};
+    // example resolve('src/utils/eny.js');
+    // example resolve('path');
+    // example resolve('index.js');
+    // example resolve('react');
+    if(isGlobalPath(file_path) && !has(option , 'baseDir' , "string") && !has(option ,'paths' ,'object')){
+        var pathRootResolve = path.resolve(root , file_path);
+        var pathHomeDirResolve = path.resolve(home_dir , file_path);
         
-        // example : resolve('./app.js');
-        if(!isGlobalPath(file_path) && option.baseDir === undefined && (localFileName=isNodePathExistsToModuleDir(path.join(caller_path,file_path)))){
-            if(existsSync(localFileName))return return_dir ? returnDir(localFileName) : localFileName;
+        if(isFile(pathRootResolve)){
+            return return_dir ? returnDir(pathRootResolve) : pathRootResolve;
         }
-        
-        // example : resolve('./app.js' , { baseDir : './src' || 'src' });
-        if(!isGlobalPath(file_path) && option.baseDir !== undefined && (localFileName=isNodePathExistsToModuleDir(path.join(base_dir,file_path)))){
-            if(existsSync(localFileName)) return return_dir ? returnDir(localFileName) : localFileName;
+        if(isFile(pathHomeDirResolve)){
+            return return_dir ? returnDir(pathHomeDirResolve) : pathHomeDirResolve;
         }
-
-        // example : resolve('components' , { baseDir : 'D://project/src' })
-        if(isGlobalPath(file_path)){ 
-            var lst = {};
-            if(existsSync(file_path)){ 
-                return return_dir ? returnDir(path.resolve(file_path)) : path.resolve(file_path);
-            } 
-            else { 
-                if( option.baseDir !== undefined ){
-                    if(existsSync(path.join(base_dir , file_path))) {
-                        lst = fs.lstatSync(path.join(base_dir , file_path));
-                        return return_dir ? returnDir(path.join(base_dir , file_path)) : path.join(base_dir , file_path);    
-                    }
-                }
-                else {
-                    if(existsSync(path.join(root , file_path))){  
-                        lst = fs.lstatSync(path.join(root , file_path)); 
-                        return return_dir ? returnDir( path.join(root , file_path)) : path.join(root , file_path);
-                    }
-                } 
-            }
+        if(isDirectory(pathRootResolve)){
+            return pathRootResolve;
         }
-        if( isNodePathExistsToModuleDir(path.resolve(home_dir , file_path))){
-            return return_dir === true ? returnDir(path.resolve( home_dir , file_path)) : path.resolve( home_dir , file_path); 
-
+        if(isDirectory(pathHomeDirResolve)){
+            return pathHomeDirResolve;
         }
+        newError = makeError(
+            '[RESOLVE-SYSTEM-FILE-NOT-FOUND-ERROR]' , 
+            `Directory or File notfound at directory <[\r
+                ${pathRootResolve} \r
+                ${pathHomeDirResolve}
+            \r]>`, 
+            traceCallerNumber
+        );        
     }
-    else {
+
+    // example resolve('index' , { baseDir : 'src' });
+    else if(isGlobalPath(file_path) && has(option , 'baseDir' , "string") && !has(option ,'paths' ,'object')){
+        if(!isGlobalPath(option.baseDir)) return makeError.throw(makeError(
+            '[RESOLVE-OPTION-ERROR]',
+            'resolve option.baseDir must be global directory and not file must be directory example = resolve("index.js",{baseDir : "src/api"})' ,
+            traceCallerNumber
+        ));
+        var baseDir = resolve(option.baseDir);
+        if(baseDir instanceof Error){
+            if(error) throw newError;
+            return newError;
+        }
+        var newFilePath = path.resolve(baseDir , file_path);
+        
+        if(isFile(newFilePath)){
+            return newFilePath;
+        }
+        if(isDirectory(newFilePath)){
+            return newFilePath;
+        }
+        
+        newError = makeError(
+            '[RESOLVE-SYSTEM-FILE-NOT-FOUND-ERROR]' ,
+            `Directory or File notfound at directory <[\r
+                ${newFilePath} \r 
+            \r]>`,
+            traceCallerNumber
+        );
+    }
+
+    // example resolve('./index.js')
+    else if(!isGlobalPath(file_path) && !has(option , 'baseDir' , "string") && !has(option ,'paths' ,'object')){
+        var newFilePath = path.resolve(caller_path, file_path);
+        if(isFile(newFilePath)){
+            return newFilePath;
+        }
+        if(isDirectory(newFilePath)){
+            return newFilePath
+        }
+        newError = makeError(
+            '[RESOLVE-SYSTEM-FILE-NOT-FOUND-ERROR]' ,
+            `Directory or File notfound at directory <[\r
+                ${newFilePath} \r 
+            \r]>`,
+            traceCallerNumber
+        );
+    }
+
+    // example resolve('./index.js' , { baseDir : 'src' })
+    else if(!isGlobalPath(file_path) && has(option , 'baseDir' , "string") && !has(option ,'paths' ,'object')){
+        if(!isGlobalPath(option.baseDir)) {
+            newError = (makeError(
+                '[RESOLVE-OPTION-ERROR]',
+                'resolve option.baseDir must be global directory and not file must be directory example = resolve("index.js",{baseDir : "src/api"})' ,
+                traceCallerNumber
+            ));
+            if(error) throw newError;
+            return newError;
+        } 
+        var baseDir = resolve(option.baseDir);
+        if(baseDir instanceof Error){
+            if(error) throw newError;
+            return newError;
+        }
+
+        var newFilePath = path.resolve(baseDir, file_path);
+        if(isFile(newFilePath)){
+            return newFilePath;
+        }
+        if(isDirectory(newFilePath)){
+            return newFilePath
+        }
+        newError = makeError(
+            '[RESOLVE-SYSTEM-FILE-NOT-FOUND-ERROR]' ,
+            `Directory or File notfound at directory <[\r
+                ${newFilePath} \r 
+            \r]>`,
+            traceCallerNumber
+        );
+    } 
+
+
+    if(newError instanceof Error){
+        if(error) throw newError;
+        return newError;
+    }
+
+
+    if(has(option,'baseDir','string') || has(option, paths,'object')){
         const get_paths = Object.entries(paths);
-        for (const [ key , value ] of get_paths) { 
+
+        for (const [ key , value ] of get_paths) {
             var newValue = value instanceof Array ? value : [ value ];
+            var newKey = key.slice(0 ,key.indexOf('/'))
             for (const fp of newValue ) { 
-                const orgPath = resolve(fp , { retrunDir : true });
-                if(enyCheck(orgPath)){  
-                    if(key === file_path.slice(0 , key.length )){
-                        const new_file_path = file_path.slice( key.length ); 
-                        const newModule = resolve(new_file_path , { baseDir : orgPath });
-                        if(enyCheck(newModule)){
-                            return newModule;
-                        }
-                    }
+                const orgPath = resolve(fp,{},error); 
+                if(key === file_path.slice(0 , key.length )){
+                    const new_file_path = file_path.slice( key.length ); 
+                    const newModule = resolve(new_file_path , { baseDir : orgPath });
+                    return newModule;
+                }
+                else if(file_path === newKey) { 
+                    if(!(orgPath instanceof Error)) return orgPath;
+                }
+            }
+        } 
+    }
+
+
+    newError =  makeError(
+        '[RESOLVE-SYSTEM-FILE-NOT-FOUND-ERROR]' ,
+        `Directory or File notfound at directory <[\r
+            ${file_path} \r 
+        \r]>`,
+        traceCallerNumber 
+    );
+    if(error) throw newError;
+    return newError;
+};
+resolve.resolveModule = function (file_path , option , error = true){
+    var newFilePath = resolve(file_path, option , false);
+    console.log(file_path)
+    if(newFilePath instanceof Error){
+        if(error) throw newFilePath;
+        return newFilePath;
+    }
+    var result = isDirectory(newFilePath , function ( is ){
+        if(isFile(newFilePath)) return newFilePath;
+        if(is) {
+            for (const iterator of commonJsExt) {
+                if(isFile(path.join(newFilePath , 'index' + iterator ))){
+                    return path.join(newFilePath , 'index' + iterator )
                 }
             }
         }
+        return makeError(
+            '[MODULE-NOT-FOUND]' ,
+            `Module notfound at directory <${ newFilePath }>`, 
+            1
+        )
+    });
+    if( result instanceof Error && error == true ){
+        throw result;
     }
-
-    
-    return createError(file_path)
-};
+    return result;
+}
 module.exports = resolve;
