@@ -32,7 +32,7 @@ EzitoTypes.array = function (param , validator = []){
         }
         return true;
     }
-    if(Validator(param, validator)) return isArray(param)
+    if(isArray(param) && Validator(param, validator)) return isArray(param)
     return false;
 };
 
@@ -47,10 +47,13 @@ EzitoTypes.asyncFunction = function (param){
     return isAsyncFunction(param);
 };
 EzitoTypes.object = function objectCheck(param){
-    return isObject(param)
+    return isObject(param);
 };
 EzitoTypes.symbol = function objectCheck(param){
-    return isSymbol(param)
+    return isSymbol(param);
+};
+EzitoTypes.undefined = function objectCheck(param){
+    return typeof param === "undefined" || param === undefined;
 };
 EzitoTypes.oneOfType = function oneOfTypeCheck(...args){
     return function oneOfCheckCreator(param) { 
