@@ -9,7 +9,8 @@ function isPromise(object){
     && Object.prototype.toString.call(object) === '[object Promise]'){
         return true;
     }
-    } catch (error) {
-        return false;   
+    } catch (error) { 
     }
+    
+    return false;  
 }

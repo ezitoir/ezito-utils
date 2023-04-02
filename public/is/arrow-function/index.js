@@ -1,13 +1,19 @@
- 
+'use strict';
+
+
+
 function isArrowFunction(fn){ 
+    if(!fn || typeof fn !== 'function') return false;
     try {
-        const fn_string = Object.prototype.toString.call(fn) === '[object Function]';
-        const is_fn = Function.prototype.toString.call(fn).trim().toLowerCase().slice(0 ,'function'.length ) !== 'function';
-        if(!fn) return false; 
-        return fn_string === is_fn && typeof fn === "function" ;
-    } catch (error) {
-        return false;
-    }
+        const fnBlockString = Function.prototype.toString.call(fn).trim();
+        const fnTypeIndex = ['[object Function]' , '[object AsyncFunction]' ].indexOf(Object.prototype.toString.call(fn));
+        const fnTypeName  = ['function' , 'async function'];
+        const isNotClass  = fnBlockString.slice(0 , 'class'.length) !== 'class';
+        if(fnTypeIndex > -1){
+            if(fnBlockString.slice(0 , fnTypeName[fnTypeIndex].length) !== fnTypeName[fnTypeIndex] && isNotClass && fn instanceof Function.prototype.constructor ) return true;
+        } 
+    } catch (error){}
+    return false;
 };
 
 module.exports = isArrowFunction;

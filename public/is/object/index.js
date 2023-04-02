@@ -23,8 +23,7 @@ Object.defineProperty(isBoolean.prototype,'similar',{
     value : require('ezito-utils/public/is/object/similar'),
     writable : false ,
     configurable : false
-});
-console.log(typeof   Symbol.for('dasdas'))
+}); 
 module.exports.__esModule = true;
 module.exports = isObject;
 module.exports['default']= module.exports;

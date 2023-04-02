@@ -3,14 +3,17 @@ const isString = require('ezito-utils/public/is/string');
 const isFunction = require('ezito-utils/public/is/function');
 const isArrowFunction = require('ezito-utils/public/is/arrow-function');
 const isAsyncFunction = require('ezito-utils/public/is/async-function');
+
 const isClass = require('ezito-utils/public/is/class'); 
 const isArray = require('ezito-utils/public/is/array');
 const isBoolean = require('ezito-utils/public/is/boolean');
 const isNumber = require('ezito-utils/public/is/number');
-const isObject = require('ezito-utils/public/is/object');
+const isObject = require('ezito-utils/public/is/object'); 
 const isSymbol = require('ezito-utils/public/is/symbol');
-const EzitoTypes = {};
 
+
+const EzitoTypes = {};
+ 
 EzitoTypes.string = function stringCheck (param){
     return isString(param);
 };
@@ -23,12 +26,19 @@ EzitoTypes.class = function (param){
 EzitoTypes.boolean = function (param){
     return isBoolean(param);
 };
-EzitoTypes.array = function (param , validator = []){
-    function Validator(args){
-        var counter = 0
-        for (const iterator of validator) {   
-            if(!iterator(args[counter])) return false;
-            counter++;
+EzitoTypes.array = function (param , validator ){ 
+    function Validator(_args , _validator){
+        for (const iterator of param) {   
+            if(isArray(_validator)){
+                if(!isArray(iterator)) return false;
+                if(iterator.length !== _validator.length ) return false;
+                for (let index = 0; index < _validator.length; index++) {
+                    if(!_validator[index](iterator[index])) return false;
+                }
+            }
+            else { 
+                if(isFunction(_validator) && _validator(iterator)) return false;
+            }
         }
         return true;
     }

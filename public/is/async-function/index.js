@@ -3,8 +3,8 @@
 
  
 function isFunction(fn){ 
-    try { 
-        if(!fn) return false; 
+    if(!fn || typeof fn !== "function") return false;
+    try {  
         const is_function = typeof fn === "function";
         const fn_async_string = Object.prototype.toString.call(fn) === '[object AsyncFunction]';
         const fn_body_string = Function.prototype.toString.call(fn).trim().toLowerCase().slice(0 , 5 ) !== 'class' ;

@@ -1,6 +1,6 @@
 'use  strict';
 
-function isSymbol(){
+function isSymbol(param){
     return typeof param === "symbol";
 }
 module.exports = isSymbol;
