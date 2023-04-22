@@ -20,7 +20,7 @@ var commonJsExt = require('ezito-utils/server/fs/common-js-ext');
 const resolve = function ezitoFsResolver(file_path , option = { baseDir : null , paths : undefined , retrunDir : false } , error = true){
   
     file_path = toPosixPath(file_path);
-    var traceCallerNumber = getTrace(1).getFileName() ===  __filename ? 2 : 1;
+    var traceCallerNumber = getTrace(1).getFileName() ===  __filename ? 2 : 1; 
     const caller_path = toPosixPath(path.dirname(getTrace(traceCallerNumber).getFileName()));
     
     const root = toPosixPath(getRootDir());

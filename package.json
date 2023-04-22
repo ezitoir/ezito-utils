@@ -1,20 +1,34 @@
 {
   "name": "ezito-utils",
-  "version": "1.0.0",
-  "private": true,
-  "main": "./", 
+  "version": "1.2.1",
+  "description": "ezito utils help you for faster programming",
+  "main": " ",
   "keywords": [
     "query" ,
     "dom-to-react-child",
     "fs",
     "object",
     "html-parser",
-    "is"
+    "is",
+    "typeOf" ,
+    "array" ,
+    "merge" 
   ],
-  "author": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ezitoir/ezito-utils.git"
+  },
+  "author": "Muhammad Ali Aghajanpour",
   "license": "ISC",
-  "description": "" ,
+  "bugs": {
+    "url": "https://github.com/ezitoir/ezito-utils/issues"
+  },
+  "homepage": "https://github.com/ezitoir/ezito-utils#readme",
   "engines": {
     "node": ">=12"
   }
 }
+ 
