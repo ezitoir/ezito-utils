@@ -10,6 +10,7 @@ const isBoolean = require('ezito-utils/public/is/boolean');
 const isNumber = require('ezito-utils/public/is/number');
 const isObject = require('ezito-utils/public/is/object'); 
 const isSymbol = require('ezito-utils/public/is/symbol');
+var isPromise  = require('ezito-utils/public/is/promise');
 
 
 const EzitoTypes = {};
@@ -17,6 +18,9 @@ const EzitoTypes = {};
 EzitoTypes.string = function stringCheck (param){
     return isString(param);
 };
+EzitoTypes.promise = function (object){
+    return isPromise(object);
+}
 EzitoTypes.function = function functionCheck(param){
     return isFunction(param);
 };

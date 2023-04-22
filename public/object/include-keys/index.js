@@ -1,29 +1,31 @@
 "use strict";
 
-
-function includeKeys ( object = null | Object ,  keys = null | Array | String  , callback = null | Function ){
+/**
+ * @param {Object} object 
+ * @param { Array | String } keys 
+ * @param { undefined | null | function} callback 
+ * @returns 
+ */
+function includeKeys ( object = Object ,  keys = Array | String  , callback = undefined | null | Function ){
+    let result = [];
     // check type for keys accept Array list of key or string key 
     if(!(keys instanceof Array ) && !(typeof keys === 'string')) throw { ErrorType : "param type erorr" , message : "keys nust instanceof Array!" };
 
     keys = (typeof keys === 'string' ? keys.split(" ") : keys ).filter(function (params) {
         return params.trim() !=='';
     });
+    
 
-    let result = keys.map(function(key){
-        if( key.indexOf('/') > -1 ){
-            return includeKeys( object , key.split('/'));
-        } 
-        if( object.hasOwnProperty(key) === true ){
-            object = object[key];
-            return object;
+    for (const checkKeys of keys) { 
+        if(checkKeys.indexOf('/') > -1){ 
+            result.push(includeKeys(object , checkKeys.split('/')));
         }
-        return 0;
-    });
-    if(result.length === keys.length){ 
-        if( Object.toString(callback) === '[object Function]' || typeof callback === 'function')
-        return callback.call( this , result.pop())
-        return result.pop();
-    } 
+        result.push(Object.hasOwnProperty.call(object , checkKeys))
+    }
+
+    result = result.filter ( is => is === true);
+    if(result.length === keys.length) return true;
+    return false;
 }
 
 

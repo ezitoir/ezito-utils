@@ -14,3 +14,5 @@ function isPromise(object){
     
     return false;  
 }
+
+module.exports = isPromise;

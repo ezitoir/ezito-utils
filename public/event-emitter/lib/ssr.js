@@ -5,6 +5,10 @@
 
 const event = require('events');
 const eventEmitter = new event.EventEmitter();
+ 
+function createEvent(){
+    return new event.EventEmitter();
+}
 eventEmitter.addListener;
 eventEmitter.removeListener;
 eventEmitter.removeAllListeners;
@@ -17,4 +21,4 @@ eventEmitter.listenerCount;
 eventEmitter.listeners;
 eventEmitter.off;
 eventEmitter.setMaxListeners;
-module.exports = eventEmitter;
+module.exports = createEvent;

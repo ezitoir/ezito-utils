@@ -11,9 +11,8 @@ function makeError (type , message, id = 0){
         error.stack = error.stack.substring(error.stack.indexOf('\n') + (1 + id))
     }
     else if (typeof chrome !== 'undefined' || typeof process !== 'undefined'){
-
         for (let index = 0; index < 2; index++) {
-            error.stack = error.stack.replace(/\n[^\n]*/, '') ;
+            error.stack = error.stack.replace(/\n[^\n]*/, '');
         }
 
         for (let index = 1; index < id ; index++) {
