@@ -238,5 +238,13 @@ function stackTrace (index){
         }
     } 
 }
-
+stackTrace.createErrorOption = function (stackNumber = 1 , message ){
+    var trace = stackTrace(stackNumber + 1);
+    return {
+        fileName : trace.getFileName(),
+        line : trace.getLineNumber(), 
+        functionName : trace.getFunctionName(),
+        methodName : trace.getMethodName(),
+    }
+}
 module.exports = stackTrace
