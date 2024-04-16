@@ -1,18 +1,18 @@
 {
   "name": "ezito-utils",
-  "version": "1.2.2",
+  "version": "3.0.0",
   "description": "ezito utils help you for faster programming",
   "main": " ",
   "keywords": [
-    "query" ,
+    "query",
     "dom-to-react-child",
     "fs",
     "object",
     "html-parser",
     "is",
-    "typeOf" ,
-    "array" ,
-    "merge" 
+    "typeOf",
+    "array",
+    "merge"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -31,4 +31,3 @@
     "node": ">=12"
   }
 }
- 

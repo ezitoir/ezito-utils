@@ -1,7 +1,16 @@
 require('ezito-utils/client/node-prototype'); 
 const ArrayToNodeList = require('ezito-utils/client/array-to-node-list'); 
 const NodeAttrToCssSelector = require('ezito-utils/client/node-attr-to-css-selector'); 
- 
+const returnTypes = require('ezito-utils/client/array-to-node-list/types');
+
+
+/**
+ * @param {<Node ,Element , String >} node
+ * @param {String} query 
+ * @param  {...any} children 
+ * @returns {returnTypes}
+ */
+
 const Query = function ( node , query = null , ...children ) {
     // check if node is function return window load event
     if (typeof node == 'function' && 'call' in node ) {
