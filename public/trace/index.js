@@ -1,8 +1,7 @@
+'use strict';
 
-/**
- * 
- */
 const getBrowers = require('ezito-utils/client/get-browers');
+
 
 var haveCaptureStackTrace = 'captureStackTrace' in Error;
 function FireFoxStackParser(error , hasName){
@@ -48,6 +47,7 @@ function FireFoxStackParser(error , hasName){
     }
     error.stack = stack;
 };
+
 function V8StackParser (error){
     function CallSite({ functionName , lineNumber , fileName , charStart }){
         this.getFunctionName = function(){
@@ -101,6 +101,7 @@ function V8StackParser (error){
     } 
     error.stack = newStack;
 }
+
 function errorConfig(){ 
     if(!haveCaptureStackTrace && !('captureStackTrace' in Error)){
         Object.defineProperty(Error,"captureStackTrace",{
@@ -238,13 +239,20 @@ function stackTrace (index){
         }
     } 
 }
-stackTrace.createErrorOption = function (stackNumber = 1 , message ){
+
+
+
+stackTrace.createErrorOption = function createErrorOption(stackNumber = 1 , message = '' , code = 1){
     var trace = stackTrace(stackNumber + 1);
     return {
+        message,
+        code,
         fileName : trace.getFileName(),
-        line : trace.getLineNumber(), 
+        lineNumber : trace.getLineNumber(), 
         functionName : trace.getFunctionName(),
         methodName : trace.getMethodName(),
+        columnNumber : trace.getColumnNumber(),
     }
 }
+
 module.exports = stackTrace
